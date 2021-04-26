@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Variable Radius Donut Chart</title>
+    <link data-require="normalize@*" data-semver="3.0.1" rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css" />
+</head>
+<style>
+.fields{
+    margin: 10px;
+}
+</style>
+
+<body>
+    <div>
+        <form class="input-form" style="padding: 20px;">
+            1: <input class="fields" id="1" type="float" />
+            2: <input class="fields" id="2" type="float" />
+            3: <input class="fields" id="3" type="float" />
+            4: <input class="fields" id="4" type="float" /><br />
+            5: <input class="fields" id="5" type="float" />
+            6: <input class="fields" id="6" type="float" />
+            7: <input class="fields" id="7" type="float" />
+            8: <input class="fields" id="8" type="float" /><br />
+            9: <input class="fields" id="9" type="float" />
+            10: <input class="fields" id="10" type="float" />
+            11: <input class="fields" id="11" type="float" />
+            12: <input class="fields" id="12" type="float" /><br />
+            13: <input class="fields" id="13" type="float" />
+            14: <input class="fields" id="14" type="float" />
+            15: <input class="fields" id="15" type="float" />
+            16: <input class="fields" id="16" type="float" /><br />
+            17: <input class="fields" id="17" type="float" />
+            18: <input class="fields" id="18" type="float" />
+            19: <input class="fields" id="19" type="float" />
+            20: <input class="fields" id="20" type="float" /><br />
+            21: <input class="fields" id="21" type="float" />
+            22: <input class="fields" id="22" type="float" />
+            23: <input class="fields" id="23" type="float" />
+            24: <input class="fields" id="24" type="float" /><br />
+            25: <input class="fields" id="25" type="float" /></br>
+            Title: <input class="fields" id="title" type="float" /><br />
+            Subtitle: <input class="fields" id="subtitle" type="float" />
+        </form>
+
+        <input type="submit" id="submit"/>
+    </div>
+
+    <div>
+        <button id='saveButton'>Export to PNG</button>
+    </div>
+    <div id="chart"></div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js" data-semver="3.4.6" data-require="d3@*"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="script.js"></script>
+    <script type="text/javascript">
+
+        var new1;
+        var new2;
+        var new3;
+        var new4;
+        var new5;
+        var new6;
+        var new7;
+        var new9;
+        var new10;
+        var new11;
+        var new12;
+        var new13;
+        var new14;
+        var new15;
+        var new16;
+        var new17;
+        var new18;
+        var new19;
+        var new20;
+        var new21;
+        var new22;
+        var new23;
+        var new24;
+        var new25;
+        var title;
+        var subtitle;
+
+        d3.select("#submit").on("click", function() {
+        update();
+        return false;
+        });
+
+        d3.select("#saveButton").on("click", function() {
+        SvgtoPng.saveSvgasPng(document.getElementById("diagram"), "diagram.png");
+        return false;
+        });
+
+    
+
+        function update () {
+            new1 = document.getElementById("1").value;
+            new2 = document.getElementById("2").value;
+            new3 = document.getElementById("3").value;
+            new4 = document.getElementById("4").value;
+            new5 = document.getElementById("5").value;
+            new6 = document.getElementById("6").value;
+            new7 = document.getElementById("7").value;
+            new8 = document.getElementById("8").value;
+            new9 = document.getElementById("9").value;
+            new10 = document.getElementById("10").value;
+            new11 = document.getElementById("11").value;
+            new12 = document.getElementById("12").value;
+            new13 = document.getElementById("13").value;
+            new14 = document.getElementById("14").value;
+            new15 = document.getElementById("15").value;
+            new16 = document.getElementById("16").value;
+            new17 = document.getElementById("17").value;
+            new18 = document.getElementById("18").value;
+            new19 = document.getElementById("19").value;
+            new20 = document.getElementById("20").value;
+            new21 = document.getElementById("21").value;
+            new22 = document.getElementById("22").value;
+            new23 = document.getElementById("23").value;
+            new24 = document.getElementById("24").value;
+            new25 = document.getElementById("25").value;
+            title = document.getElementById("title").value;
+            subtitle = document.getElementById("subtitle").value;
+
+           var dataset2 = [
+                { count: new1, size: new1*2.2 },
+                { count: new2, size: new2*2.2 },
+                { count: new3, size: new3*2.2 },
+                { count: new4, size: new4*2.2 },
+                { count: new5, size: new5*2.2 },
+                { count: new6, size: new6*2.2 },
+                { count: new7, size: new7*2.2 },
+                { count: new8, size: new8*2.2 },
+                { count: new9, size: new9*2.2 },
+                { count: new10, size: new10*2.2 },
+                { count: new11, size: new11*2.2 },
+                { count: new12, size: new12*2.2 },
+                { count: new13, size: new13*2.2 },
+                { count: new14, size: new14*2.2 },
+                { count: new15, size: new15*2.2 },
+                { count: new16, size: new16*2.2 },
+                { count: new17, size: new17*2.2 },
+                { count: new18, size: new18*2.2 },
+                { count: new19, size: new19*2.2 },
+                { count: new20, size: new20*2.2 },
+                { count: new21, size: new21*2.2 },
+                { count: new22, size: new22*2.2 },
+                { count: new23, size: new23*2.2 },
+                { count: new24, size: new24*2.2 },
+                { count: new25, size: new25*2.2 }
+            ];
+
+        console.log(dataset2)
+
+
+        var width = 760;
+        var height = 760;
+        var donutWidth = 305;
+        var innerRadius = (Math.min(width, height) / 2) - donutWidth;
+
+        // fix this later lol
+        var color = d3.scaleOrdinal()
+            .range(["#E81A1A", "#EE4914", "#F4790D", "#F7910A", "#F9AB07", "#FCC004", "#FFD700", 
+            "#C8C912", "#91BB25", "#59AD37", "#229F49", "#249755", "#268E61", "#29866D", "#2B7D79",
+            "#2F6C91", "#335BA9", "#4551A2", "#57479B", "#693C94", "#7B32BD", "#962C70", "#A42962",
+            "#B22654", "#CD2037"])
+        var svg = d3.select('#chart')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate(' + (width / 2) +
+                ',' + (height / 2) + ')');
+
+        var thetitle = svg.append("text")
+        .attr("color", "black")
+        .attr("font-size", "22px")
+        .attr("x", -25)
+        .attr("y", -10)
+        .text(title)
+
+
+        var thesubtitle = svg.append("text")
+        .attr("color", "black")
+        .attr("font-size", "16px")
+        .attr("x", -45)
+        .attr("y", 25)
+        .text(subtitle)
+
+        var arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(function (d) {
+                return innerRadius + d.data.size;
+            });
+
+        var pie = d3.layout.pie()
+            .value(function (d) { return d.count; })
+            .sort(null);
+
+        var path = svg.selectAll('path')
+            .data(pie(dataset2))
+            .enter()
+            .append('path')
+            .attr('d', arc)
+            .attr('fill', function (d, i) {
+                return color(i);
+            });
+
+        return false;
+        }
+
+        
+
+    </script>
+</body>
+
+</html>
