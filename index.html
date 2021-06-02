@@ -2,84 +2,165 @@
 <meta charset="utf-8" />
 
 <head>
-    <title>Variable Radius Donut Chart</title>
+    <title>Variable Radius Pie Chart</title>
     <link data-require="normalize@*" data-semver="3.0.1" rel="stylesheet"
         href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css" />
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js" data-semver="3.4.6" data-require="d3@*"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
-
 <style>
-    /* .fields {
-        margin: 4px;
-        display: none;
-    } */
+    @font-face {
+        font-family: 'GothamRounded-Light';
+        src: url(fonts/GothamRounded-Light.otf) format('otf'),
+            url(fonts/GothamRounded-Light.svg#GothamRounded-Light) format('svg'),
+            url(fonts/GothamRounded-Light.ttf) format('truetype'),
+            url(fonts/GothamRounded-Light.woff2) format('woff2');
+    }
+    
+    @font-face {
+        font-family: 'GothamRounded-Medium';
+        src: url(fonts/GothamRounded-Medium.otf) format('otf'),
+            url(fonts/GothamRounded-Medium.svg#GothamRounded-Medium) format('svg'),
+            url(fonts/GothamRounded-Medium.ttf) format('truetype'),
+            url(fonts/GothamRounded-Medium.woff2) format('woff2');
+    }
 
-    .field{
+.bodybin{
+    margin: 40px;
+    text-align:center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+    /*Styling for the lines connecting the labels to the slices*/
+    polyline {
+        opacity: .8;
+        /* stroke: black; */
+        stroke-width: 2px;
+        fill: none;
+    }
+    #chart{
+        margin: 0 auto;
+    }
+
+    .labelName tspan {
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .labelName {
+        font-size: 0.9em;
+        font-style: italic;
+    }
+
+
+    .field {
         display: none;
         padding: 8px;
     }
 
+    .labels{
+        margin-right:8px;
+    }
 
-    /* .labels {
-        display: none;
-    } */
+    #fieldrow1 {
+        display: block;
+    }
 
+    .pie-slice{
+        background-image: radial-gradient( rgba(255, 255, 255, 0.921), rgba(255, 255, 255, 0.1) );
+    }
 
-   #fieldrow1{
-       display: block;
-   }
-
-   #chart {
-       display: inline;
-   }
+    #chart {
+        display: inline;
+    }
 </style>
 
 
 
 <body>
     <div class="bodybin">
+        <div>
         <form class="input-form" style="padding: 20px; display: inline;">
 
-            Title: <input class="title" id="title" type="float" /><br />
-            Subtitle: <input class="subtitle" id="subtitle" type="float" /><br/><br/>
+            Title: <input class="title" id="title" type="float" /><br /><br />
+            Subtitle: <input class="subtitle" id="subtitle1" type="float" /><br /> <text id="subtitle-error" style="color: white; font-family: 'GothamRounded-Medium'; ">This subtitle is too long! Try breaking it onto line 2 for better results.</text><br/>
+            Subtitle Line 2: <input class="subtitle" id="subtitle2" type="float" /><br /><br />
 
-            <b>Input Data:</b><br/>
-            <div id="fieldrow1" class="field"><input class="labels" id="l1" type="float" /><input class="fields" id="f1" type="float" /></div>
-            <div id="fieldrow2" class="field"><input class="labels" id="l2" type="float" /><input class="fields" id="f2" type="float" /></div>
-            <div id="fieldrow3" class="field"><input class="labels" id="l3" type="float" /><input class="fields" id="f3" type="float" /></div>
-            <div id="fieldrow4" class="field"><input class="labels" id="l4" type="float" /><input class="fields" id="f4" type="float" /></div>
-            <div id="fieldrow5" class="field"><input class="labels" id="l5" type="float" /><input class="fields" id="f5" type="float" /></div>
-            <div id="fieldrow6" class="field"><input class="labels" id="l6" type="float" /><input class="fields" id="f6" type="float" /></div>
-            <div id="fieldrow7" class="field"><input class="labels" id="l7" type="float" /><input class="fields" id="f7" type="float" /></div>
-            <div id="fieldrow8" class="field"><input class="labels" id="l8" type="float" /><input class="fields" id="f8" type="float" /></div>
-            <div id="fieldrow9" class="field"><input class="labels" id="l9" type="float" /><input class="fields" id="f9" type="float" /></div>
-            <div id="fieldrow10" class="field"><input class="labels" id="l10" type="float" /><input class="fields" id="f10" type="float" /></div>
-            <div id="fieldrow11" class="field"><input class="labels" id="l11" type="float" /><input class="fields" id="f11" type="float" /></div>
-            <div id="fieldrow12" class="field"><input class="labels" id="l12" type="float" /><input class="fields" id="f12" type="float" /></div>
-            <div id="fieldrow13" class="field"><input class="labels" id="l13" type="float" /><input class="fields" id="f13" type="float" /></div>
-            <div id="fieldrow14" class="field"><input class="labels" id="l14" type="float" /><input class="fields" id="f14" type="float" /></div>
-            <div id="fieldrow15" class="field"><input class="labels" id="l15" type="float" /><input class="fields" id="f15" type="float" /></div>
-            <div id="fieldrow16" class="field"><input class="labels" id="l16" type="float" /><input class="fields" id="f16" type="float" /></div>
-            <div id="fieldrow17" class="field"><input class="labels" id="l17" type="float" /><input class="fields" id="f17" type="float" /></div>
-            <div id="fieldrow18" class="field"><input class="labels" id="l18" type="float" /><input class="fields" id="f18" type="float" /></div>
-            <div id="fieldrow19" class="field"><input class="labels" id="l19" type="float" /><input class="fields" id="f19" type="float" /></div>
-            <div id="fieldrow20" class="field"><input class="labels" id="l20" type="float" /><input class="fields" id="f20" type="float" /></div>
-            <div id="fieldrow21" class="field"><input class="labels" id="l21" type="float" /><input class="fields" id="f21" type="float" /></div>
-            <div id="fieldrow22" class="field"><input class="labels" id="l22" type="float" /><input class="fields" id="f22" type="float" /></div>
-            <div id="fieldrow23" class="field"><input class="labels" id="l23" type="float" /><input class="fields" id="f23" type="float" /></div>
-            <div id="fieldrow24" class="field"><input class="labels" id="l24" type="float" /><input class="fields" id="f24" type="float" /></div>
-            <div id="fieldrow25" class="field"><input class="labels" id="l25" type="float" /><input class="fields" id="f25" type="float" /></div>
+            <b>Input Data:</b><br />
+            <div id="fieldrow1" class="field"><input class="labels" id="l1" type="float" /><input class="fields" id="f1"
+                    type="float" /></div>
+            <div id="fieldrow2" class="field"><input class="labels" id="l2" type="float" /><input class="fields" id="f2"
+                    type="float" /></div>
+            <div id="fieldrow3" class="field"><input class="labels" id="l3" type="float" /><input class="fields" id="f3"
+                    type="float" /></div>
+            <div id="fieldrow4" class="field"><input class="labels" id="l4" type="float" /><input class="fields" id="f4"
+                    type="float" /></div>
+            <div id="fieldrow5" class="field"><input class="labels" id="l5" type="float" /><input class="fields" id="f5"
+                    type="float" /></div>
+            <div id="fieldrow6" class="field"><input class="labels" id="l6" type="float" /><input class="fields" id="f6"
+                    type="float" /></div>
+            <div id="fieldrow7" class="field"><input class="labels" id="l7" type="float" /><input class="fields" id="f7"
+                    type="float" /></div>
+            <div id="fieldrow8" class="field"><input class="labels" id="l8" type="float" /><input class="fields" id="f8"
+                    type="float" /></div>
+            <div id="fieldrow9" class="field"><input class="labels" id="l9" type="float" /><input class="fields" id="f9"
+                    type="float" /></div>
+            <div id="fieldrow10" class="field"><input class="labels" id="l10" type="float" /><input class="fields"
+                    id="f10" type="float" /></div>
+            <div id="fieldrow11" class="field"><input class="labels" id="l11" type="float" /><input class="fields"
+                    id="f11" type="float" /></div>
+            <div id="fieldrow12" class="field"><input class="labels" id="l12" type="float" /><input class="fields"
+                    id="f12" type="float" /></div>
+            <div id="fieldrow13" class="field"><input class="labels" id="l13" type="float" /><input class="fields"
+                    id="f13" type="float" /></div>
+            <div id="fieldrow14" class="field"><input class="labels" id="l14" type="float" /><input class="fields"
+                    id="f14" type="float" /></div>
+            <div id="fieldrow15" class="field"><input class="labels" id="l15" type="float" /><input class="fields"
+                    id="f15" type="float" /></div>
+            <div id="fieldrow16" class="field"><input class="labels" id="l16" type="float" /><input class="fields"
+                    id="f16" type="float" /></div>
+            <div id="fieldrow17" class="field"><input class="labels" id="l17" type="float" /><input class="fields"
+                    id="f17" type="float" /></div>
+            <div id="fieldrow18" class="field"><input class="labels" id="l18" type="float" /><input class="fields"
+                    id="f18" type="float" /></div>
+            <div id="fieldrow19" class="field"><input class="labels" id="l19" type="float" /><input class="fields"
+                    id="f19" type="float" /></div>
+            <div id="fieldrow20" class="field"><input class="labels" id="l20" type="float" /><input class="fields"
+                    id="f20" type="float" /></div>
+            <div id="fieldrow21" class="field"><input class="labels" id="l21" type="float" /><input class="fields"
+                    id="f21" type="float" /></div>
+            <div id="fieldrow22" class="field"><input class="labels" id="l22" type="float" /><input class="fields"
+                    id="f22" type="float" /></div>
+            <div id="fieldrow23" class="field"><input class="labels" id="l23" type="float" /><input class="fields"
+                    id="f23" type="float" /></div>
+            <div id="fieldrow24" class="field"><input class="labels" id="l24" type="float" /><input class="fields"
+                    id="f24" type="float" /></div>
+            <div id="fieldrow25" class="field"><input class="labels" id="l25" type="float" /><input class="fields"
+                    id="f25" type="float" /></div>
 
             <input id="addfield" type="button" value="Add Field">
         </form>
+<br/><br/>
+<div class="button-box">
+        <input type="submit" id="submit"/>    <button  id='save'>Download SVG</button>
+    </div>
+</div>
+<div id="chart" width="820px" height="820px"></div>
 
-        <input type="submit" id="submit" />
+
     </div>
 
     <script type="text/javascript">
+
         // initialize the field number to be 1.
         var field_num = 2;
 
@@ -93,14 +174,30 @@
             console.log(field_num)
         });
 
+
+        d3.select("#save").on("click", function () {
+            saveSvg(svg, 'test.svg')
+        });
+        
+        function saveSvg(svgEl, name) {
+        svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        var svgData = svgEl.outerHTML;
+        var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+        var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+        var svgUrl = URL.createObjectURL(svgBlob);
+        var downloadLink = document.createElement("a");
+        downloadLink.href = svgUrl;
+        downloadLink.download = name;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+
     </script>
 
-    <div>
-        <button id='saveButton'>Export to PNG</button>
-    </div>
-    <div id="chart"></div>
     </div>
     <script type="text/javascript">
+
 
         var new1;
         var new2;
@@ -127,7 +224,10 @@
         var new24;
         var new25;
         var title;
-        var subtitle;
+        var subtitle1;
+        var subtitle2;
+
+
 
         d3.select("#submit").on("click", function () {
             update();
@@ -137,6 +237,9 @@
 
 
         function update() {
+
+        
+
             new1 = document.getElementById("f1").value;
             new2 = document.getElementById("f2").value;
             new3 = document.getElementById("f3").value;
@@ -164,21 +267,19 @@
             new25 = document.getElementById("f25").value;
 
 
-            var value_array = [Number(new1), 
-                Number(new2), Number(new3), Number(new4),
-                Number(new5),Number(new6),Number(new7),Number(new8),
-                Number(new9),Number(new10), Number(new11), Number(new12), 
-                Number(new13), Number(new14),
-                Number(new15), Number(new16), Number(new17), Number(new18), 
-                Number(new19),Number(new20),Number(new21),Number(new22),
-                Number(new23),Number(new24),Number(new25)];
+            var value_array = [Number(new1),
+            Number(new2), Number(new3), Number(new4),
+            Number(new5), Number(new6), Number(new7), Number(new8),
+            Number(new9), Number(new10), Number(new11), Number(new12),
+            Number(new13), Number(new14),
+            Number(new15), Number(new16), Number(new17), Number(new18),
+            Number(new19), Number(new20), Number(new21), Number(new22),
+            Number(new23), Number(new24), Number(new25)];
 
             console.log(value_array)
 
-            var array_min = Math.min(...value_array)
-            var array_max = Math.max(...value_array)
-            console.log(array_min)
-            console.log(array_max);
+
+
 
             let index = 0;
 
@@ -211,34 +312,140 @@
             l24 = document.getElementById("l24").value;
             l25 = document.getElementById("l25").value;
             title = document.getElementById("title").value;
-            subtitle = document.getElementById("subtitle").value;
+            subtitle1 = document.getElementById("subtitle1").value;
+            subtitle2 = document.getElementById("subtitle2").value;
+
+            if (subtitle1.length>20){
+                d3.selectAll("#subtitle-error").style("color", "red")
+                return false;
+            }
+            else {
+                d3.selectAll("#subtitle-error").style("color", "white")
+
+            }
+
+            // SCALING THE VALUES
+
+            // Variables array_min and array_max calculate the minimum and maximum output of the values,
+            // in order to build a custom scale for taking care of extreme values.
+            var array_min = Math.min(...value_array)
+            var array_max = Math.max(...value_array)
+
+            let countScale = d3.scaleLinear();
+            countScale
+                .domain([array_min, array_max])
+                .range([5, 75]);
+
+
+            let sizeScale = d3.scaleLinear();
+            sizeScale
+                .domain([array_min, array_max])
+                .range([25, 110]);
+
+
+            function countSize(input) {
+                if (input != 0) { // checking for 0 values
+                    return countScale(input)
+                }
+                else {
+                    return 0
+                }
+            }
+
+
+            function scaleSize(input) {
+                if (input != 0) { // checking for 0 values
+                    return sizeScale(input)
+                }
+                else {
+                    return 0
+                }
+            }
+
+            // Scaling the counts
+
+            cscaled1 = countSize(new1)
+            cscaled2 = countSize(new2)
+            cscaled3 = countSize(new3)
+            cscaled4 = countSize(new4)
+            cscaled5 = countSize(new5)
+            cscaled6 = countSize(new6)
+            cscaled7 = countSize(new7)
+            cscaled8 = countSize(new8)
+            cscaled9 = countSize(new9)
+            cscaled10 = countSize(new10)
+            cscaled11 = countSize(new11)
+            cscaled12 = countSize(new12)
+            cscaled13 = countSize(new13)
+            cscaled14 = countSize(new14)
+            cscaled15 = countSize(new15)
+            cscaled16 = countSize(new16)
+            cscaled17 = countSize(new17)
+            cscaled18 = countSize(new18)
+            cscaled19 = countSize(new19)
+            cscaled20 = countSize(new20)
+            cscaled21 = countSize(new21)
+            cscaled22 = countSize(new22)
+            cscaled23 = countSize(new23)
+            cscaled24 = countSize(new24)
+            cscaled25 = countSize(new25)
+
+            // Scaling the sizes
+            scaled1 = scaleSize(new1)
+            scaled2 = scaleSize(new2)
+            scaled3 = scaleSize(new3)
+            scaled4 = scaleSize(new4)
+            scaled5 = scaleSize(new5)
+            scaled6 = scaleSize(new6)
+            scaled7 = scaleSize(new7)
+            scaled8 = scaleSize(new8)
+            scaled9 = scaleSize(new9)
+            scaled10 = scaleSize(new10)
+            scaled11 = scaleSize(new11)
+            scaled12 = scaleSize(new12)
+            scaled13 = scaleSize(new13)
+            scaled14 = scaleSize(new14)
+            scaled15 = scaleSize(new15)
+            scaled16 = scaleSize(new16)
+            scaled17 = scaleSize(new17)
+            scaled18 = scaleSize(new18)
+            scaled19 = scaleSize(new19)
+            scaled20 = scaleSize(new20)
+            scaled21 = scaleSize(new21)
+            scaled22 = scaleSize(new22)
+            scaled23 = scaleSize(new23)
+            scaled24 = scaleSize(new24)
+            scaled25 = scaleSize(new25)
+
+
+
 
             var dataset2 = [
-                { count: new1, size: new1 * 2.2, label: l1 },
-                { count: new2, size: new2 * 2.2, label: l2 },
-                { count: new3, size: new3 * 2.2, label: l3 },
-                { count: new4, size: new4 * 2.2, label: l4 },
-                { count: new5, size: new5 * 2.2, label: l5 },
-                { count: new6, size: new6 * 2.2, label: l6 },
-                { count: new7, size: new7 * 2.2, label: l7 },
-                { count: new8, size: new8 * 2.2, label: l8 },
-                { count: new9, size: new9 * 2.2, label: l9 },
-                { count: new10, size: new10 * 2.2, label: l10 },
-                { count: new11, size: new11 * 2.2, label: l11 },
-                { count: new12, size: new12 * 2.2, label: l12 },
-                { count: new13, size: new13 * 2.2, label: l13 },
-                { count: new14, size: new14 * 2.2, label: l14 },
-                { count: new15, size: new15 * 2.2, label: l15 },
-                { count: new16, size: new16 * 2.2, label: l16 },
-                { count: new17, size: new17 * 2.2, label: l17 },
-                { count: new18, size: new18 * 2.2, label: l18 },
-                { count: new19, size: new19 * 2.2, label: l19 },
-                { count: new20, size: new20 * 2.2, label: l20 },
-                { count: new21, size: new21 * 2.2, label: l21 },
-                { count: new22, size: new22 * 2.2, label: l22 },
-                { count: new23, size: new23 * 2.2, label: l23 },
-                { count: new24, size: new24 * 2.2, label: l24 },
-                { count: new25, size: new25 * 2.2, label: l25 }
+                { count: cscaled1, size: scaled1, label: l1, label_value: new1 },
+                { count: cscaled2, size: scaled2, label: l2, label_value: new2},
+                { count: cscaled3, size: scaled3, label: l3, label_value: new3 },
+                { count: cscaled4, size: scaled4, label: l4, label_value: new4 },
+                { count: cscaled5, size: scaled5, label: l5, label_value: new5 },
+                { count: scaled6, size: scaled6, label: l6, label_value: new6 },
+                { count: scaled7, size: scaled7, label: l7, label_value: new7 },
+                { count: scaled8, size: scaled8, label: l8, label_value: new8 },
+                { count: scaled9, size: scaled9, label: l9, label_value: new9 },
+                { count: scaled10, size: scaled10, label: l10, label_value: new10 },
+                { count: scaled11, size: scaled11, label: l11, label_value: new11 },
+                { count: scaled12, size: scaled12, label: l12, label_value: new12 },
+                { count: scaled13, size: scaled13, label: l13, label_value: new13 },
+                { count: scaled14, size: scaled14, label: l14, label_value: new14 },
+                { count: scaled15, size: scaled15, label: l15, label_value: new15 },
+                { count: scaled16, size: scaled16, label: l16, label_value: new16 },
+                { count: scaled17, size: scaled17, label: l17, label_value: new17 },
+                { count: scaled18, size: scaled18, label: l18, label_value: new18 },
+                { count: scaled19, size: scaled19, label: l19, label_value: new19 },
+                { count: scaled20, size: scaled20, label: l20, label_value: new20 },
+                { count: scaled21, size: scaled21, label: l21, label_value: new21 },
+                { count: scaled22, size: scaled22, label: l22, label_value: new22 },
+                { count: scaled23, size: scaled23, label: l23, label_value: new23 },
+                { count: scaled24, size: scaled24, label: l24, label_value: new24 },
+                { count: scaled25, size: scaled25, label: l25, label_value: new25 }
             ];
 
             console.log(dataset2)
@@ -250,6 +457,7 @@
             var innerRadius = (Math.min(width, height) / 2) - donutWidth;
 
             var color = d3.scaleOrdinal()
+                .domain(d3.range(1,25))
                 .range(["#E81A1A", "#EE4914", "#F4790D", "#F7910A", "#F9AB07", "#FCC004", "#FFD700",
                     "#C8C912", "#91BB25", "#59AD37", "#229F49", "#249755", "#268E61", "#29866D", "#2B7D79",
                     "#2F6C91", "#335BA9", "#4551A2", "#57479B", "#693C94", "#7B32BD", "#962C70", "#A42962",
@@ -257,26 +465,18 @@
 
             var svg = d3.select('#chart')
                 .append('svg')
-                .attr('width', width)
-                .attr('height', height)
+                .attr("id","svg")
+                .attr('width', width+100)
+                .attr('height', height+100)
                 .append('g')
-                .attr('transform', 'translate(' + (width / 2) +
-                    ',' + (height / 2) + ')');
-
-            var thetitle = svg.append("text")
-                .attr("color", "black")
-                .attr("font-size", "22px")
-                .attr("x", -25)
-                .attr("y", -10)
-                .text(title)
+                .attr('transform', 'translate(' + ((width+100) / 2) +
+                    ',' + ((height+100) / 2) + ')');
 
 
-            var thesubtitle = svg.append("text")
-                .attr("color", "black")
-                .attr("font-size", "16px")
-                .attr("x", -45)
-                .attr("y", 25)
-                .text(subtitle)
+            svg.append("g")
+                .attr("class", "labels");
+            svg.append("g")
+                .attr("class", "lines");
 
             var arc = d3.svg.arc()
                 .innerRadius(innerRadius)
@@ -289,61 +489,406 @@
                 .sort(null);
 
             var data_ready = pie(dataset2)
+            console.log(data_ready)
+
+
 
             var path = svg.selectAll('path')
                 .data(pie(dataset2))
                 .enter()
                 .append('path')
                 .attr('d', arc)
+                .attr("class", "pie-slice")
                 .attr('fill', function (d, i) {
-                    return color(i);
+                    if (field_num <5){
+                        return color(i*6);
+                    }
+                    else if (field_num >=5 && field_num <8){
+                        return color(i*3)
+                    }
+                    else if (field_num >=8 && field_num <10){
+                        return color(Math.round(i*2.75))
+                    }
+                    else if (field_num >=10 && field_num <15){
+                        return color(Math.round(i*1.75))
+                    }
+                    else if (field_num >=15 && field_num <20){
+                        return color(Math.round(i*1.3))
+                    }
+                    else if (field_num >=21 ** field_num <25){
+                        return color(Math.round(i*1.03))
+                    }
+                    else {
+                        return color(i)
+                    }
+                });
+
+            // NEW
+            svg.append('g').classed('labels', true);
+            svg.append('g').classed('lines', true);
+            svg.append('g').classed('label-circles', true);
+            svg.append('g').classed('label-circle-numbers', true);
+
+
+
+            var outerArc = d3.arc()
+                .outerRadius(innerRadius * 2.75)
+                .innerRadius(innerRadius * 2.75);
+
+
+            var polyline = svg.select('.lines')
+                .selectAll('polyline')
+                .data(pie(dataset2))
+                .enter().append('polyline')
+                .attr("fill", "none")
+                .attr('stroke', function (d, i) {
+                    if (field_num <5){
+                        return color(i*6);
+                    }
+                    else if (field_num >=5 && field_num <8){
+                        return color(i*3)
+                    }
+                    else if (field_num >=8 && field_num <10){
+                        return color(Math.round(i*2.75))
+                    }
+                    else if (field_num >=10 && field_num <15){
+                        return color(Math.round(i*1.75))
+                    }
+                    else if (field_num >=15 && field_num <20){
+                        return color(Math.round(i*1.3))
+                    }
+                    else if (field_num >=21 ** field_num <25){
+                        return color(Math.round(i*1.03))
+                    }
+                    else {
+                        return color(i)
+                    }
+                })
+                .attr('points', function (d) {
+                    if (d.value != 0) {
+                        var pos = outerArc.centroid(d);
+                        pos[0] = innerRadius * 3.2 * (midAngle(d) < Math.PI ? .8 : -.8);
+                        pos[1] = outerArc.centroid(d)[1]*1.2
+
+                        return [arc.centroid(d), outerArc.centroid(d), pos]
+                        
+                    }
                 });
 
 
-        //     // Another arc that won't be drawn. Just for labels positioning
-        //     var outerArc = d3.arc()
-        //         .innerRadius(innerRadius*.9)
-        //         .outerRadius(innerRadius*.9)
+            var label = svg.select('.labels').selectAll('text')
+                .data(pie(dataset2))
+                .enter().append('text')
+                .style("font-family", 'GothamRounded-Light')
+                .style("font-size", "14px")
+                .attr('dy', '.35em')
+                .html(function (d) {
+                    return d.data.label;
+                })
+                .attr('transform', function (d) {
+                    var pos = outerArc.centroid(d);
+                    pos[0] = innerRadius * 3.82 * (midAngle(d) < Math.PI ? .8 : -.8);
+                    pos[1] = outerArc.centroid(d)[1]*1.2
+                    return 'translate(' + pos + ')';
+                })
+                .style('text-anchor', function (d) {
+                    return (midAngle(d)) < Math.PI ? 'start' : 'end';
+                });
 
-        //     // Add the polylines between chart and labels:
-        //     svg
-        //         .selectAll('allPolylines')
-        //         .data(data_ready)
-        //         .enter()
-        //         .append('polyline')
-        //         .attr("stroke", "black")
-        //         .style("fill", "none")
-        //         .attr("stroke-width", 1)
-        //         .attr('points', function (d) {
-        //             var posA = arc.centroid(d) // line insertion in the slice
-        //             var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
-        //             var posC = outerArc.centroid(d); // Label position = almost the same as posB
-        //             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
-        //             posC[0] = innerRadius * 0.95 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
-        //             return [posA, posB, posC]
-        //         })
+            var label_circle = svg.select('.label-circles').selectAll('circle')
+                .data(pie(dataset2))
+                .enter().append("circle")
+                .attr("r", "18px")
+                .attr("visibility", function (d, i) {
+                    if (d.value != 0) {
+                        return "visible"
+                    }
+                    else {
+                        return "hidden"
+                    }
+                })
+                .attr("fill", function (d, i) {
+                    if (field_num <5){
+                        return color(i*6);
+                    }
+                    else if (field_num >=5 && field_num <8){
+                        return color(i*3)
+                    }
+                    else if (field_num >=8 && field_num <10){
+                        return color(Math.round(i*2.75))
+                    }
+                    else if (field_num >=10 && field_num <15){
+                        return color(Math.round(i*1.75))
+                    }
+                    else if (field_num >=15 && field_num <20){
+                        return color(Math.round(i*1.3))
+                    }
+                    else if (field_num >=21 ** field_num <25){
+                        return color(Math.round(i*1.03))
+                    }
+                    else {
+                        return color(i)
+                    }})
+                .attr('transform', function (d) {
 
-        //     // Add the polylines between chart and labels:
-        //     svg
-        //         .selectAll('allLabels')
-        //         .data(data_ready)
-        //         .enter()
-        //         .append('text')
-        //         .text(function (d) { console.log(d.data.label); return d.data.label })
-        //         .attr('transform', function (d) {
-        //             var pos = outerArc.centroid(d);
-        //             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-        //             pos[0] = innerRadius * 0.99 * (midangle < Math.PI ? 1 : -1);
-        //             return 'translate(' + pos + ')';
-        //         })
-        //         .style('text-anchor', function (d) {
-        //             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-        //             return (midangle < Math.PI ? 'start' : 'end')
-        //         })
+
+                    var pos = outerArc.centroid(d);
+                        pos[0] = innerRadius * 3.35 * (midAngle(d) < Math.PI ? .8 : -.8);
+                        pos[1] = outerArc.centroid(d)[1]*1.2
+
+                        return 'translate(' + pos + ')';
+                    
+
+                    // var pos = outerArc.centroid(d);
+                    // pos[0] = innerRadius * 3.35 * (midAngle(d) < Math.PI ? 1 : -1);
+                    // return 'translate(' + pos + ')';
+
+                });
+
+            var label_circle_numbers = svg.select('.label-circle-numbers').selectAll('text')
+                .data(pie(dataset2))
+                .enter().append("text")
+                .attr("font-size", function(d){
+                    if (String(d.data.label_value).length==3){
+                        return "14px"
+                    }
+                    else{
+                        return "16px"
+                    }
+                })
+                .attr("font-family", "GothamRounded-Medium")
+                .attr("dy", ".35em")
+                .attr("visibility", function (d, i) {
+                    if (d.value != 0) {
+                        return "visible"
+                    }
+                    else {
+                        return "hidden"
+                    }
+                })
+                .html(function (d) {
+                    return d.data.label_value;
+                })
+                .attr("fill", "white")
+                .attr('transform', function (d) {
+                    var pos = outerArc.centroid(d);
+                    if (String(d.data.label_value).length==2){
+                    pos[0] = innerRadius * 3.22 * (midAngle(d) < Math.PI ? .8 : -.8);
+                    pos[1] = outerArc.centroid(d)[1]*1.2
+
+                    return 'translate(' + pos + ')';
+                    }
+                    else if (String(d.data.label_value).length==3){
+                    pos[0] = innerRadius * 3.145 * (midAngle(d) < Math.PI ? .8 : -.8);
+                    pos[1] = outerArc.centroid(d)[1]*1.2
+                    return 'translate(' + pos + ')';
+                    }
+                    else if (String(d.data.label_value).length==1){
+                    pos[0] = innerRadius * 3.3 * (midAngle(d) < Math.PI ? .8 : -.8);
+                    pos[1] = outerArc.centroid(d)[1]*1.2
+                    return 'translate(' + pos + ')';
+                    }
+
+                })
+                .style('text-anchor', function (d) {
+                    return (midAngle(d)) < Math.PI ? 'start' : 'end';
+                });
+
+            // Processing the Title entry to break into several lines, if needed.
+            var split_title;
+            var processed_split_title = [];
+
+    
+
+            if (title.length > 14) {
+                split_title = title.split(" ")
+                if (split_title.length > 1) { // If the title has more than one word
+
+                    // Normalize length to 5
+                    if (split_title.length == 2) {
+                        split_title.push("", "", "", "")
+                    }
+                    else if (split_title.length == 3) {
+                        split_title.push("", "", "")
+                    }
+                    else if (split_title.length == 4) {
+                        split_title.push("", "")
+                    }
+                    else if (split_title.length == 4) {
+                        split_title.push("", "")
+                    }
+                    else if (split_title.length == 5) {
+                        split_title.push("", "", "")
+                    }
+
+                    // Checking the length of the first three words. If they're short, combine into the first line.
+                    if (split_title[0].length + split_title[1].length + split_title[2].length < 12) {
+                        processed_split_title.push(split_title[0] + " " + split_title[1] + " " + split_title[2])
+                        // Now looking at the last few words. If these are short, combine.
+                        if (split_title[3].length + split_title[4].length + split_title[5].length < 12) {
+                            processed_split_title.push(split_title[3] + " " + split_title[4] + " " + split_title[5])
+                        }
+                        else if (split_title[3].length + split_title[4].length < 12) {
+                            processed_split_title.push(split_title[3] + " " + split_title[4])
+                            processed_split_title.push(split_title[5])
+                        }
+                        else {
+                            processed_split_title.push(split_title[3])
+                            processed_split_title.push(split_title[4])
+                            processed_split_title.push(split_title[5])
+                        }
+                    }
+                    //If the first two words are short, combine into the first line.
+                    else if (split_title[0].length + split_title[1].length < 12) {
+                        processed_split_title.push(split_title[0] + " " + split_title[1])
+                        // Now looking at the rest of the words.
+                        if (split_title[2].length + split_title[3].length + split_title[4].length < 12) {
+                            processed_split_title.push(split_title[2] + " " + split_title[3] + " " + split_title[4])
+                            processed_split_title.push(split_title[5])
+                        }
+                        else if (split_title[2].length + split_title[3].length < 12) {
+                            processed_split_title.push(split_title[2] + " " + split_title[3])
+                            if (split_title[4].length + split_title[5].length < 12) {
+                                processed_split_title.push(split_title[4] + " " + split_title[5])
+                            }
+                            else {
+                                processed_split_title.push(split_title[4])
+                                processed_split_title.push(split_title[5])
+                            }
+                        }
+                    }
+                    else {
+                        processed_split_title.push(split_title[0])
+                        processed_split_title.push(split_title[1])
+                        processed_split_title.push(split_title[2])
+                        // processed_split_title.push(" ")
+                        processed_split_title.push(split_title[3])
+                        // processed_split_title.push(" ")
+                        processed_split_title.push(split_title[4])
+                        processed_split_title.push(split_title[5])
+                    }
+                    //Check the length of the first three words and see if you need to combine them.
+                }
+            }
+            else {
+                processed_split_title.push(title)
+            }
+            console.log(split_title)
+            console.log(processed_split_title)
+
+            var title_index = 0;
+            processed_split_title.forEach((element) => {
+                if (element != "") {
+                    title_index += 1;
+                }
+            })
+
+            // Positioning the title for one line
+            if (title_index == 1) {
+                // Title
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', -15) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    .html(processed_split_title[0]) // add text to the circle.
+                    .style('font-size', '1.1em')
+                    .attr('fill', "#205dac")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+                // Subtitle
+
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', 10) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    // .html(processed_split_subtitle[0]) // add text to the circle.
+                    .html(subtitle1)
+                    .style('font-size', '.8em')
+                    .attr('fill', "black")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', 28) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    // .html(processed_split_subtitle[0]) // add text to the circle.
+                    .html(subtitle2)
+                    .style('font-size', '.8em')
+                    .attr('fill', "black")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+            }
+
+
+            // If the title is two lines
+            if (title_index == 2) {
+                // Title
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', -25) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    .html(processed_split_title[0]) // add text to the circle.
+                    .style('font-size', '1.1em')
+                    .attr('fill', "#205dac")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', -5) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    .html(processed_split_title[1]) // add text to the circle.
+                    .style('font-size', '1.1em')
+                    .attr('fill', "#205dac")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+                // Subtitle
+
+            }
+
+            // If the title is three lines
+            if (title_index == 3) {
+                // Title
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', -35) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    .html(processed_split_title[0]) // add text to the circle.
+                    .style('font-size', '1.1em')
+                    .attr('fill', "#205dac")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', -15) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    .html(processed_split_title[1]) // add text to the circle.
+                    .style('font-size', '1.1em')
+                    .attr('fill', "#205dac")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+                svg.append('text')
+                    .attr('class', 'toolCircle')
+                    .attr('dy', 5) // hard-coded. can adjust this to adjust text vertical alignment in tooltip
+                    .html(processed_split_title[2]) // add text to the circle.
+                    .style('font-size', '1.1em')
+                    .attr('fill', "#205dac")
+                    .attr('font-family', 'GothamRounded-Medium')
+                    .style('text-anchor', 'middle');
+
+
+                // Subtitle
+
+            }
 
 
 
-        //     return false;
+            function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; }
+
+            //     return false;
         }
 
 

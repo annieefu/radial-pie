@@ -1,0 +1,66 @@
+    @font-face {
+        font-family: 'GothamRounded-Light';
+        src: url(fonts/GothamRounded-Light.otf) format('otf'),
+            url(fonts/GothamRounded-Light.svg#GothamRounded-Light) format('svg'),
+            url(fonts/GothamRounded-Light.ttf) format('truetype'),
+            url(fonts/GothamRounded-Light.woff2) format('woff2');
+    }
+    
+    @font-face {
+        font-family: 'GothamRounded-Medium';
+        src: url(fonts/GothamRounded-Medium.otf) format('otf'),
+            url(fonts/GothamRounded-Medium.svg#GothamRounded-Medium) format('svg'),
+            url(fonts/GothamRounded-Medium.ttf) format('truetype'),
+            url(fonts/GothamRounded-Medium.woff2) format('woff2');
+    }
+
+.bodybin{
+    margin: 40px;
+    text-align:center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+    /*Styling for the lines connecting the labels to the slices*/
+    polyline {
+        opacity: .8;
+        /* stroke: black; */
+        stroke-width: 2px;
+        fill: none;
+    }
+    #chart{
+        margin: 0 auto;
+    }
+
+    .labelName tspan {
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .labelName {
+        font-size: 0.9em;
+        font-style: italic;
+    }
+
+
+    .field {
+        display: none;
+        padding: 8px;
+    }
+
+    .labels{
+        margin-right:8px;
+    }
+
+    #fieldrow1 {
+        display: block;
+    }
+
+    .pie-slice{
+        background-image: radial-gradient( rgba(255, 255, 255, 0.921), rgba(255, 255, 255, 0.1) );
+    }
+
+    #chart {
+        display: inline;
+    }
